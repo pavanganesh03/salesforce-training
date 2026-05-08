@@ -23,19 +23,19 @@ __--__.
 If you're new to Salesforce, just imagine a University Campus.
 
 🏛️ The Account = The Department
-Think of: "The Computer Science Dept" or "The Library."
+Think of: The Computer Science Dept or The Library.
 The Job: It’s the Office/Building. It holds the address and the budget.
  Logic: The building stays there even after students graduate.
 
 👤 The Contact = The Person
-Think of: Pavan Ganesh (Student) or Dr. Smith (Professor).
+Think of: Pavan Ganesh (Student) or Dr. prakash (Professor).
 The Job: This is the Individual. It holds their email and phone number.
  Logic: You can't talk to a building; you talk to the people inside it.
 
 💼 The Opportunity = The Goal
-Think of: "Summer Internship" or "Research Grant."
+Think of: Summer Internship or Research Grant.
 The Job: This is the Potential Win. It tracks the money and the deadline.
- Logic: It’s a project that is either "In Progress" or "Finished."
+ Logic: It’s a project that is either In Progress or Finished.
 
 
    
