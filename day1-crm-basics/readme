@@ -25,21 +25,21 @@ If you're new to Salesforce, just imagine a University Campus.
 🏛️ The Account = The Department
 Think of: "The Computer Science Dept" or "The Library."
 The Job: It’s the Office/Building. It holds the address and the budget.
-Simple Logic: The building stays there even after students graduate.
+ Logic: The building stays there even after students graduate.
 
 👤 The Contact = The Person
 Think of: Pavan Ganesh (Student) or Dr. Smith (Professor).
 The Job: This is the Individual. It holds their email and phone number.
-Simple Logic: You can't talk to a building; you talk to the people inside it.
+ Logic: You can't talk to a building; you talk to the people inside it.
 
 💼 The Opportunity = The Goal
 Think of: "Summer Internship" or "Research Grant."
 The Job: This is the Potential Win. It tracks the money and the deadline.
-Simple Logic: It’s a project that is either "In Progress" or "Finished."
+ Logic: It’s a project that is either "In Progress" or "Finished."
 
 
    
-
+![image]{https://github.com/pavanganesh03/salesforce-training/blob/17651d2b2e5eae3d8c3e7d4c042fb0b22d37578b/day1-crm-basics/Screenshot%202026-05-08%20163215.png}
 
 
 
