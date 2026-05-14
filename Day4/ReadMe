@@ -1,1 +1,54 @@
+Day 4: Salesforce Flow Builder & Automation
 
+
+1. What is Flow Builder?
+Flow Builder is a powerful, point-and-click tool in Salesforce used to automate complex business processes without writing code. 
+It allows users to create logic that can perform actions like updating records, sending emails, and guiding users through multi-step screens.
+By using a visual interface, businesses can streamline their workflows and ensure data consistency across the enterprise.
+===========================================================================================================================================================================================================================
+ 2. Types of Flows
+Understanding which flow to use depends on how the automation should be triggered.  
+\\\\\\\\\\\\\\\\
+Screen Flow: A flow that requires user interaction. 
+It guides users through a specific business process by providing screens where they can input or view data.  
+
+Record-Triggered Flow: An automated process that launches in the background whenever a record is created, updated, or deleted.
+It is ideal for "behind-the-scenes" updates that don't require user input.
+===========================================================================================================================================================================================================================
+3. Automation Ideas (College Management System)Automation helps reduce manual workload and improves accuracy within a campus environment.
+Here are five suggested processes:
+Auto Email After Registration: Send a welcome packet and login credentials immediately after a student record is created. 
+Automatic Student ID Generation: Use a flow to format and assign a unique institutional ID number as soon as a student enrolls. 
+Course Capacity Notifications: Automatically alert faculty members via email or Slack when a course reaches its maximum student limit.
+Fee Deadline Reminders: Schedule automated reminders to be sent to students 7 days before their tuition payment is due.
+Dynamic Seat Updates: Automatically decrease the Remaining Seats field on a Course record every time a new Enrollment record is finalized.  
+===========================================================================================================================================================================================================================
+4. Flow Diagram: Auto Student ID Generation
+Flow Logic Components
+
+#The Trigger (Start Node):  
+Type: Record-Triggered Flow.  
+Object: Student (Student__c).
+Condition: Executes only when a record is created.  
+Timing: Runs "After the record is saved" to ensure the ID is applied to a permanent record.
+#Get Records (Data Collection):  
+The flow searches for the Department object related to the student.  
+It fetches the Department_Code__c (e.g., "AI&DS" or "CSE") to include in the ID.
+#Decision Point (Branching Logic):  Check Admission Type: The flow asks, "Is this a Regular or Lateral Entry student?
+"Regular Path: Uses the standard starting sequence (e.g., 2026-).
+Lateral Path: Appends a specific identifier (e.g., 2026-LE-) to distinguish their academic track.
+#The Formula Variable (The ID Generator):  
+A formula resource inside Flow Builder creates the final string.  
+Structure: YEAR(TODAY()) + Dept_Code__c + Random_or_Sequential_Number.
+Result: Converts raw data into a unique identifier like 2026-AIDS-055.
+#Final Action 
+(Update Record):  The flow writes the generated string into the Student_ID_Field__c.
+  Notification: Optionally triggers an automated email to the student with their new ID. 
+===========================================================================================================================================================================================================================
+5. Manual vs. Automated Process
+Workflow:
+Faculty write names on paper and manually type them into Excel later. 
+Students scan a QR code; Salesforce immediately updates their attendance record.
+Problems:
+High risk of data entry errors, lost paperwork, and delayed reporting. 
+Data is captured in real-time with 100% accuracy and instant visibility. 
