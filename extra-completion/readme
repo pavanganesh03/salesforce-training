@@ -1,0 +1,22 @@
+# Light Completion Day
+
+## Modules Completed
+- [Module 1: Salesforce Basics](ca://s?q=Salesforce_Basics_module_summary)
+- [Module 2: Data Modeling](ca://s?q=Salesforce_Data_Modeling_module_summary)
+- [Module 3: Reports & Dashboards](ca://s?q=Salesforce_Reports_and_Dashboards_module_summary)
+- [Module 4: Automation Tools](ca://s?q=Salesforce_Automation_Tools_module_summary)
+
+## Key Learnings
+- [Salesforce Basics](ca://s?q=Learning_from_Salesforce_Basics): Learned how Salesforce organizes data into objects and records.
+- [Data Modeling](ca://s?q=Learning_from_Data_Modeling): Understood the importance of relationships (lookup vs master-detail).
+- [Reports & Dashboards](ca://s?q=Learning_from_Reports_and_Dashboards): Learned how to create dynamic dashboards for real-time insights.
+- [Automation Tools](ca://s?q=Learning_from_Automation_Tools): Discovered how Flow can automate complex business processes without code.
+
+## Doubts / Questions
+- [Salesforce Basics](ca://s?q=Salesforce_Basics_doubt): How does Salesforce handle data archiving for inactive records?
+- [Data Modeling](ca://s?q=Data_Modeling_doubt): When should I prefer junction objects over hierarchical relationships?
+- [Reports & Dashboards](ca://s?q=Reports_and_Dashboards_doubt): Can dashboards auto-refresh without manual intervention?
+- [Automation Tools](ca://s?q=Automation_Tools_doubt): What are the performance limits of Flow compared to Apex triggers?
+
+## Trailhead Progress Screenshot
+![Trailhead Progress](./trailhead-progress.png)
