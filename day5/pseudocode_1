@@ -1,25 +1,20 @@
 Example A: Bulk Attendance & Eligibility Processing
 This logic processes a collection of student records efficiently to check exam eligibility while respecting platform constraints.
-      // Apex class to process student semester eligibility based on attendance parameters
+     
 public class CollegeAdministrationEngine {
     
     public static void verifyExamEligibility(List<Id> studentIds) {
-        // Query student enrollment details along with attendance metrics
+       
         List<Semester_Enrollment__c> enrollments = [
             SELECT Id, Student__c, Total_Classes_Conducted__c, Classes_Attended__c, Exam_Eligible__c 
             FROM Semester_Enrollment__c 
             WHERE Student__c IN :studentIds AND Current_Semester__c = true
         ];
         
-        List<Semester_Enrollment__c> enrollmentsToUpdate = new List<Semester_Enrollment__c>();
-        
-        // Loop through collections linearly to calculate percentages
+        List<Semester_Enrollment__c> enrollmentsToUpdate = new List<Semester_Enrollment__c>()
         for(Semester_Enrollment__c enrollment : enrollments) {
             if(enrollment.Total_Classes_Conducted__c > 0) {
-                // Calculate percentage
                 Decimal attendanceRate = (Decimal.valueOf(enrollment.Classes_Attended__c) / Decimal.valueOf(enrollment.Total_Classes_Conducted__c)) * 100;
-                
-                // Business Logic: Threshold restriction at 75%
                 if(attendanceRate >= 75.0) {
                     enrollment.Exam_Eligible__c = true;
                 } else {
@@ -28,8 +23,6 @@ public class CollegeAdministrationEngine {
                 enrollmentsToUpdate.add(enrollment);
             }
         }
-        
-        // Commit changes to the cloud database cleanly in a bulkified DML operation
         if(!enrollmentsToUpdate.isEmpty()) {
             update enrollmentsToUpdate;
         }
