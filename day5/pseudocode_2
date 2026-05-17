@@ -1,0 +1,17 @@
+Example B: Prevent Delete Apex Trigger Logic
+This trigger acts as a database guardrail, preventing critical historical data deletion unless specific security criteria are met.
+  
+trigger DepartmentProtectionTrigger on Department__c (before delete) {
+    Set<Id> deptIds = new Set<Id>();
+    for(Department__c dept : Trigger.old) {
+        deptIds.add(dept.Id);
+    }
+    Map<Id, Department__c> deptsWithCourses = new Map<Id, Department__c>([
+        SELECT Id, (SELECT Id FROM Courses__r) FROM Department__c WHERE Id IN :deptIds
+    ]);
+    for(Department__c dept : Trigger.old) {
+        if(deptsWithCourses.containsKey(dept.Id) && deptsWithCourses.get(dept.Id).Courses__r.size() > 0) {
+            dept.addError('Critical Operation Denied: This Department cannot be deleted because it contains active linked courses.');
+        }
+    }
+}
