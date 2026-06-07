@@ -1,0 +1,66 @@
+# Day 16: Advanced Debugging Best Practices & Performance Optimization
+
+Welcome to the Day 16 project repository! This module focuses on the art and science of finding, diagnosing, and fixing application issues across the Salesforce tech stack. Below is a comprehensive blueprint covering common backend/frontend bugs, systematic troubleshooting methodologies, runtime performance considerations, and development standards for Lightning Web Components (LWC).
+
+---
+
+## 🐜 Common Bug Scenarios
+
+Developing on a multitenant platform means running into unique runtime bugs. The most common technical scenarios encountered include:
+
+### 1. The Dreaded `NullPointerException` (NPE)
+* **The Cause:** Attempting to reference or call a method on an object variable that has not been instantiated or populated with data.
+* **Example:** Querying an account field value from a child record without first verifying if the parent relationship lookup field actually contains an ID.
+
+### 2. Mixed DML Operations Error (`MIXED_DML_OPERATION`)
+* **The Cause:** Attempting to modify Setup objects (like `User`, `Group`, or `PermissionSet`) and non-Setup objects (like `Account`, `Contact`, or a custom object) within the exact same synchronous database transaction.
+
+### 3. System Limit Exceptions (`System.LimitException`)
+* **The Cause:** Exceeding platform-enforced multi-tenant governor ceilings. The most common are the **101 SOQL query limit** or the **150 DML statement limit**, which occur when database operations are mistakenly executed inside loops.
+
+### 4. LWC Asynchronous Lifecycle Errors
+* **The Cause:** Attempting to manipulate DOM elements in the JavaScript controller before the component template has finished rendering on the browser stage.
+
+---
+
+## 🔍 Debugging Approach
+
+To resolve errors efficiently without guess-and-check coding, we implement a structured, multi-tier debugging lifecycle across the backend and frontend:
+
+### Backend (Apex) Strategy:
+1. **Log Level Optimization:** Set target **Debug Logs** inside the Salesforce Setup menu. Adjust the `Apex Code` category to `FINE` or `FINEST` and `Database` to `INFO` to isolate runtime paths cleanly without bloating log file sizes.
+2. **Developer Console Inspection:** Load raw log data into the Developer Console's **Log Inspector**. Utilize the **Execution Tree** and **Execution Stack** panels to isolate exactly which method call or database trigger branch triggered the failure.
+3. **Checkpoints & Anonymous Apex:** Inject code checkpoints directly into Apex classes via the console to view full in-memory variable values at runtime, and replicate conditions safely using scripts inside the Execute Anonymous window.
+
+### Frontend (LWC) Strategy:
+1. **Browser DevTools & Source Maps:** Open Chrome DevTools (`F12`), enable **Lightning Component Debug Mode** in Salesforce Setup to unminify client-side code, and locate scripts under the `modules/c/` namespace.
+2. **Breakpoints & Debugger Statements:** Inject `debugger;` statements directly into local JavaScript execution files or manually place active breakpoints inside the browser's Sources panel to pause execution and step through variable bindings line by line.
+
+---
+
+## 🚀 Performance Discussion
+
+A bug-free application can still fail if it runs slowly. Optimizing backend processing speeds keeps our applications highly scalable:
+
+* **The Power of SOQL Bulkification:** Ensure that every query uses highly selective `WHERE` clauses on indexed fields (like `Id`, `Name`, or custom External IDs). Never embed queries inside `for` loops; extract records collectively into Map structures before iterating.
+* **Efficient Heap Size Management:** Asynchronous Apex provides a 12MB heap limit, but synchronous blocks restrict memory to 6MB. To avoid running out of memory during large transactions, process data loops using `SOQL For Loops` (e.g., `for (List<Account> accts : [SELECT Id FROM Account])`), which chunks records into sets of 200 rather than loading thousands into memory at once.
+* **CPU Time Limit Mitigation:** Reduce complex nested loops ($O(n^2)$ complexity). Utilize Apex Collections (`Map<Id, sObject>`) to quickly relate records in memory using an immediate $O(1)$ lookup algorithm instead of burning system processing seconds.
+
+---
+
+## 💎 LWC Best Practices
+
+To ensure frontend user interfaces render instantaneously and run efficiently, our LWC architecture adheres to these core guidelines:
+
+* **Leverage Lightning Data Service (LDS):** Prefer `@wire` adapters (like `getRecord` or `updateRecord`) over custom Apex classes whenever possible. LDS manages caching automatically, sharing records across separate components to drastically reduce duplicate network requests.
+* **Optimize Apex Interactivity:** When custom Apex is mandatory, mark the classes with `(cacheable=true)` to cache values on the client browser. For save operations, invoke Apex *imperatively* inside explicit user action handlers (like button clicks) rather than firing continuous network calls.
+* **Defensive Lifecycle Coding:** Never query elements using `this.template.querySelector()` inside the `connectedCallback()`, as the UI DOM layout does not exist yet. Always defer DOM manipulations to the `renderedCallback()`.
+* **Component Deconstruction:** Break monolithic interfaces down into small, single-responsibility child components. This keeps our code scannable and ensures only the affected visual nodes re-render when state changes occur.
+
+---
+
+## 🧠 Reflection
+
+Day 16 highlighted that debugging is not just a reactive fix—it is an intentional engineering practice. Writing code is only half the battle; knowing exactly how to trace its execution when things go sideways separates an amateur coder from an enterprise-grade developer.
+
+Learning how to navigate execution trees in the Developer Console and parsing unminified JavaScript source files in Browser DevTools completely removes the guesswork from debugging. Moving forward, prioritizing defensive patterns—like bulkifying queries, checking for null values up front, and respecting component lifecycle loops—will drastically reduce the time we spend hunting down errors. This approach helps ensure that the systems we build run efficiently and scale reliably.
