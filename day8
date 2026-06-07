@@ -1,0 +1,38 @@
+# Day 8: Lightning Web Components (LWC) Basics
+
+Welcome to the Day 8 project repository! This module focuses on building web applications on the Salesforce platform using modern web standards via Lightning Web Components (LWC). Below is a comprehensive breakdown of the core concepts learned, architecture implementations, and a deep-dive reflection on this project.
+
+---
+
+## 📌 What is LWC?
+
+**Lightning Web Components (LWC)** is Salesforce’s modern UI framework used to build dynamic web applications on the Lightning Platform. Built on native web technologies that run directly in the browser—such as ECMAScript 2015 (ES6) or later, Web Components, and Custom Elements—LWC is a lightweight framework that delivers exceptional browser performance. 
+
+Unlike older legacy frameworks, LWC leverages the modern web stack, meaning it relies heavily on native browser execution rather than heavy abstractions layer-built over JavaScript.
+
+---
+
+## 🚀 Why Salesforce Uses LWC
+
+Salesforce introduced LWC to shift away from traditional, proprietary abstractions (like Aura) and align directly with modern web standards.
+
+* **Performance and Speed:** Because it runs natively on the browsers engine without a bulky framework wrapper, components render faster and consume less memory.
+* **Standard Web Development:** It utilizes universally understood standards (HTML, CSS, modern JavaScript). Developers from standard web backgrounds (React, Vue, Angular) can transition into Salesforce development with minimal friction.
+* **Better Security & Enterprise Features:** It integrates seamlessly with Salesforce's Lightning Data Service (LDS) and utilizes Lightning Locker / Locker Service security policies natively.
+* **Code Reusability:** It features highly decoupled, modular components that can be used across multiple business applications or layouts within an org.
+
+---
+
+## 🖼️ Your UI Screens
+
+*Place your application screenshots below to showcase your UI design:*
+
+### 1. Main Dashboard / Component View
+![Main App Layout](https://via.placeholder.com/800x400.png?text=Placeholder:+Insert+Your+LWC+UI+Screenshot+Here)
+*Description: A view of our custom LWC component deployed on the Lightning App Page.*
+
+---
+
+## 🧱 Component Breakdown
+
+Our application follows a modular, component-driven design layout. Below is a breakdown of the structural components used to form the interface:
