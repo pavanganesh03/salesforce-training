@@ -1,0 +1,51 @@
+# Day 13: DevOps & Continuous Integration / Continuous Deployment (CI/CD)
+
+Welcome to the Day 13 project repository! This module focuses on taking source-driven development to its logical peak: complete automation. Below is an architectural overview of how Continuous Integration and Continuous Deployment (CI/CD) pipelines eliminate manual deployment vulnerabilities, safeguard data environments, and establish reliable release cadences in enterprise Salesforce landscapes.
+
+---
+
+## 🔄 What is CI/CD?
+
+**CI/CD** stands for Continuous Integration and Continuous Deployment (or Continuous Delivery). It represents a culture, set of operating principles, and a collection of practices that enable development teams to deliver code changes more frequently and reliably.
+
+* **Continuous Integration (CI):** A development practice where team members integrate their code changes into a shared repository (like GitHub) frequently—often multiple times a day. Each check-in is verified by an automated build, allowing teams to detect code conflicts, structural bugs, and testing regressions early.
+* **Continuous Deployment (CD):** The next phase of the pipeline where validated code changes that pass the integration phase are automatically packaged, validated against upstream org dependencies, and deployed straight into sandbox, testing, or production environments without manual clicking.
+
+---
+
+## 📈 Why Deployment Workflow Matters
+
+An optimized, automated deployment workflow is the backbone of an agile development team. It replaces chaotic, manual system configurations with a predictable, repeatable process. 
+
+### Key Benefits of a Structured Workflow:
+* **Drastically Reduced Time-to-Market:** Automated pipelines move hotfixes and features from a developer's machine to production in minutes rather than forcing a backlog to wait for weekend release windows.
+* **Guaranteed Code Quality:** By embedding automated Apex test executions, code linting, and security scans directly into the workflow, bad code is systematically blocked before it can affect real business users.
+* **Minimized Human Error:** Automated scripting ensures that configuration steps are executed identically every single time, removing the risk of an admin forgetting to include a dependency or checking the wrong profile permission box during a deployment.
+
+---
+
+## ⚠️ Problems Without Version Control
+
+Relying on manual tools or change sets without a Version Control System (VCS) like Git places an enterprise org in a constant state of technical risk:
+
+* **Zero Historical Audit Trail:** Without a VCS, there is no master ledger showing who changed a validation rule, when an Apex trigger was altered, or why a field permission was dropped. Tracking down the root cause of a production outage becomes an exercise in guesswork.
+* **Environment Drift:** Sandboxes quickly drift away from production configuration baselines. Developers end up testing logic in environments that do not mirror reality, resulting in features passing locally but failing completely upon production deployment.
+* **The "Silent Overwrite":** Multiple developers working out of a shared sandbox routinely save over each other's logic. Whoever clicks "Save" last wins, wiping out hours of peer development without triggering any platform warning flags.
+
+---
+
+## ⚙️ The Trifecta: GitHub + SFDX + DevOps Explanation
+
+True modern Salesforce DevOps is achieved by fusing three independent components into a single automated pipeline ecosystem:
+
+1. **GitHub (The Orchestrator & Source of Truth):** GitHub manages the code branches, facilitates peer reviews through Pull Requests, and uses **GitHub Actions** as the execution engine to trigger automated workflows whenever a developer checks in code.
+2. **Salesforce DX (The Tooling Engine):** Provides the underlying programmatic interface (SFDX/Salesforce CLI) that executes the heavy platform tasks—such as converting source files, logging into destination orgs headlessly, deploying metadata components, and executing target test suites.
+3. **DevOps (The Operational Strategy):** The overall methodology that connects people, automated pipelines, and environments. It shifts quality control leftward in the cycle, turning release management from a manual chore into a continuous background utility.
+
+---
+
+## 🏢 Enterprise Deployment Pipeline
+
+An enterprise pipeline enforces a rigid, quality-gated progression across isolated environments to safeguard the production org:
+
+### The Enterprise Promotion Pathway:
