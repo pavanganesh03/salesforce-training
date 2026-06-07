@@ -1,0 +1,64 @@
+# Day 15: Enterprise Data Management & Migration Governance
+
+Welcome to the Day 15 project repository! This module shifts the focus to the lifeblood of any enterprise application: **Data Integrity**. Below is a comprehensive overview of architectural data quality issues, strategic migration frameworks, proactive duplication prevention strategies, and the downstream business risks of managing a degraded database.
+
+---
+
+## ⚠️ Data Quality Problems
+
+In a large-scale Salesforce ecosystem, data degradation happens naturally over time unless defensive guardrails are actively maintained. Common data quality problems include:
+
+* **Incomplete & Missing Information:** Critical operational fields (such as phone numbers, emails, industry classifications, or lead sources) are left blank by users rushing through record creation.
+* **Inconsistent Formatting:** Data entered without strict structural guidelines (e.g., telephone numbers entered as `(555) 123-4567`, `5551234567`, or `+1-555-123-4567`) breaks automated messaging systems and integrations.
+* **Stale & Obsolete Records:** B2B data ages rapidly. Contact points change jobs, companies merge, and phone lines disconnect, leaving behind "ghost data" that artificially inflates database volumes.
+* **Orphaned Records:** Records created without proper parent lookup associations (like Contacts missing an Account ID), which breaks reporting metrics and security sharing paths.
+
+---
+
+## 🚛 Migration Discussion
+
+Data migration is not a simple export-and-import routine—it is an intricate extraction, transformation, and loading (ETL) engineering process that requires strict sequencing.
+
+### The Strategic Migration Sequence:
+
+1. **Extraction & Source Profiling:** Backing up and assessing legacy source data to analyze formatting gaps, column structures, and overall data hygiene.
+2. **Data Cleansing (Pre-Load):** Parsing data sets *outside* of Salesforce to fix formatting errors, isolate duplicates, and drop useless historical records before touching system limits.
+3. **Schema Mapping:** Reconciling source database columns with destination Salesforce standard/custom field API names.
+4. **Targeted Object Load Sequencing:** Loading objects in a strict relational order to prevent reference errors. Parents must always be loaded before children:
+   * **Step 1:** Accounts ➡️ **Step 2:** Contacts ➡️ **Step 3:** Opportunities/Custom Child Items.
+5. **Post-Load Validation:** Spot-checking random record IDs, verifying total record counts match, and checking lookup relationships to ensure migration parity.
+
+---
+
+## 🛡️ Duplicate Prevention Ideas
+
+The most efficient way to keep a database clean is to block duplicates right at the front door. This project utilizes a multi-layered preventative framework:
+
+### 1. Salesforce Matching & Duplicate Rules
+* **Matching Rules:** Define the exact criteria used to identify a duplicate record (e.g., implementing *Fuzzy Matching* logic on corporate names or *Exact Matching* on email addresses).
+* **Duplicate Rules:** Define what the platform does when a matching match is flagged. It can either **Block** the user entirely from saving, or **Alert** them while letting them save a duplicate anyway for later deduplication matching.
+
+### 2. Unique Constraints & External IDs
+* Marking high-risk identifier fields (like a custom `Customer_ID__c`) as **Unique** at the database level completely prevents duplicate records from being inserted via the UI, Apex, or external API integration threads.
+
+### 3. Programmatic & Trigger Enforcement
+* For complex business logic that standard matching rules cannot catch, an Apex `Before-Insert` trigger can screen prospective rows against existing records using targeted SOQL sweeps, gracefully appending errors via `.addError()`.
+
+---
+
+## 🏢 Enterprise Risks of Bad Data
+
+Allowing bad data to plague an enterprise Salesforce environment introduces direct, measurable operational and financial damage to an organization:
+
+* **Inaccurate Executive Reporting & Analytics:** Executive dashboards rely on clean data aggregates. If metrics are loaded with duplicates or missing attributes, forecasts become completely unreliable, leading to flawed business decisions.
+* **Damaged Customer Experience (CX):** Reaching out to the same contact multiple times due to duplicate records, or addressing them by misspelled names, erodes brand authority and diminishes customer trust.
+* **Wasted Marketing Spend & Operations:** Email marketing campaigns targeting inaccurate or dead contact rows result in high bounce rates, damaged domain reputations, and bloated subscription tier costs.
+* **Integration Pipeline Breakages:** Downstream ERP or billing architectures require highly predictable data formats. A single malformed payload or missing required field coming from Salesforce can cause real-time middleware syncs to crash.
+
+---
+
+## 🧠 Reflection
+
+Day 15 made me realize that write-intensive skills like Apex and LWC are only as valuable as the underlying data they interact with. Building an incredibly fast web component means nothing if the fields it displays are corrupted, duplicated, or missing entirely. 
+
+Learning the exact order of operations required for enterprise migrations highlighted the value of structured thinking. It forced me to map out complex lookup paths before writing import scripts. Moving forward, prioritizing declarative tools like Duplicate Rules and backing them up with native database field uniqueness constraints will ensure the custom architectures we build remain clean, reliable, and highly functional for enterprise business users.
