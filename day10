@@ -1,0 +1,72 @@
+# Day 10: End-to-End Salesforce Mini-Project
+
+Welcome to the Day 10 Mini-Project repository! This project serves as a capstone, consolidating declarative configurations (Data Modeling, Validation Rules, and Flows) with programmatic features (Apex and Lightning Web Components) into a unified custom solution.
+
+---
+
+## 🏛️ System Overview
+
+This mini-project delivers an automated business application designed to manage custom operations seamlessly on the Salesforce platform. The application tracks business metrics, automates state transitions, enforces strict data validation guidelines, and provides an optimized user interface for end users. 
+
+### Key High-Level Capabilities:
+* **Declarative Automation:** Instantly handles background record updates without relying on heavy custom code codebases.
+* **Asynchronous & Scheduled Triggers:** Offloads heavy background processing logic safely outside the synchronous user thread.
+* **Modern UI Layer:** Replaces standard page layouts with a tailored, high-performance workspace using modern web components.
+
+---
+
+## 💼 CRM Concepts
+
+The architecture utilizes Salesforce's foundational CRM paradigms to deliver enterprise-grade performance:
+* **Multi-Tenancy & Governor Limits:** Built with platform constraints in mind, ensuring all custom Apex and SOQL queries are structurally bulkified to share multi-tenant cloud infrastructure safely.
+* **Declarative vs. Programmatic Optimization:** Adheres to the "Low-Code First" philosophy—leveraging out-of-the-box platform configuration engines for data validation and layout grids, reserving custom Apex solely for complex conditional algorithms and multi-object manipulation.
+* **Data Integrity and Security:** Utilizes built-in object-level security, field-level security, and system sharing rules to preserve compliance across different user profiles.
+
+---
+
+## 📊 Data Model
+
+The application leverages standard objects combined with custom objects configured with strong referential integrity.
+
+### Entity Relationships:
+* **Standard Objects Used:** `Account` (Business Accounts) and `Contact` (Key Personnel).
+* **Custom Object Implementation:** A custom child object is established to track transactions or specific programmatic logs related to parental records.
+* **Relationship Types:** * **Master-Detail Relationship:** Configured where strict data cascading, security inheritance, and roll-up summaries are mandatory.
+  * **Lookup Relationship:** Configured for casual data associations where independent data lifecycles are required.
+
+---
+
+## 🛑 Validation Rules
+
+To prevent data corruption, server-side data validation is strictly implemented via declarative validation formulas.
+
+### Implemented Business Guards:
+1. **Prevent Invalid Status Progressions:** A validation rule blocks users from bypassing steps in the life-cycle stage field (e.g., preventing a status from jumping directly from *New* to *Closed* without an intermediate review).
+2. **Conditional Field Requirements:** Ensures specific description or tracking fields are populated *only when* specific high-tier dropdown options are selected.
+3. **Regex Pattern Matching:** Validates specialized format strings (such as custom asset IDs or phone fields) before allowing records to hit the database.
+
+---
+
+## ⚡ Flows
+
+Salesforce **Lightning Flows** serve as our declarative automation backbone, replacing legacy process builders and workflows.
+
+* **Record-Triggered Flows:** Configured to run **Before-Save** for lightning-fast field updates on the triggering record, and **After-Save** for downstream actions like automatically spinning up related tasks or sending custom email alerts.
+* **Screen Flows:** Implemented as a guided wizard utility inside our user interfaces, prompting users through step-by-step scripts to gather input and cleanly generate clean multi-object structures.
+
+---
+
+## ⚙️ Apex Logic
+
+When declarative logic hits its functional ceiling, custom Apex steps in to handle complex data manipulation securely.
+
+```apex
+public with sharing class ProjectAutomationHandler {
+    /**
+     * Bulkified handler method invoked by trigger or LWC controller
+     * Processes collections of records securely respecting platform governor limits
+     */
+    public static void bulkifyStateProcessing(List<sObject> records) {
+        // Complex business calculations, collection mapping, and bulk DML logic live here
+    }
+}
