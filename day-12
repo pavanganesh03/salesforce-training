@@ -1,0 +1,54 @@
+# Day 12: Salesforce DX & Enterprise Source-Driven Workflows
+
+Welcome to the Day 12 project repository! This module marks a paradigm shift from traditional, org-centric development to modern, source-driven development using Salesforce Developer Experience (DX). Below is an architectural overview of how version control, command-line interfaces, and modern DevOps strategies transform enterprise collaboration on the Salesforce platform.
+
+---
+
+## 🛠️ What is Salesforce DX?
+
+**Salesforce DX (Developer Experience)** is a suite of tools designed to introduce source-driven development and modern DevOps practices to the Salesforce ecosystem. Historically, Salesforce development was "org-centric," meaning the sandbox or production org was the single source of truth, and changes were tracked manually via change sets.
+
+Salesforce DX shifts the single source of truth entirely to a **Version Control System (VCS)**, like Git. It introduces a modular metadata format (SFDX source format), allows for automated scratch org provisioning, and standardizes the application lifecycle to match modern engineering frameworks utilized by teams building in React, Java, or Python.
+
+---
+
+## 💻 Why CLI Matters
+
+The **Salesforce Command-Line Interface (CLI)** is the engine that powers modern Salesforce development. It allows developers to interact with their orgs without clicking through a browser UI.
+
+* **Automation & Scripting:** The CLI allows teams to automate repetitive tasks like creating scratch orgs, pushing/pulling metadata, running Apex tests, and deploying code.
+* **Continuous Integration (CI/CD):** Because the CLI exposes all Salesforce operations via text commands, automation servers (like GitHub Actions, Jenkins, or GitLab CI) can execute headless deployments to upstream sandboxes automatically upon code check-in.
+* **Speed and Efficiency:** Combining the CLI with lightweight text editors (like VS Code) allows developers to write code, query databases, execute anonymous scripts, and view debug tracks instantaneously from a unified terminal workspace.
+
+---
+
+## 🐙 Why GitHub Matters
+
+**GitHub** acts as the central collaboration engine and the ultimate source of truth for the entire application lifecycle.
+
+* **Source-Driven Single Source of Truth:** Code and configurations are no longer trapped inside a hidden sandbox database. Every configuration rule, Apex class, and component layout is explicitly cataloged as human-readable files in a tracking repository.
+* **Traceability and Auditing:** GitHub tracks exactly **who** made a change, **what** lines of code were modified, **when** it occurred, and **why** (via commit messages and linked issue tickets).
+* **Automated Guardrails (Actions):** GitHub Actions can be configured to automatically trigger unit test suites and code linting scripts the moment a developer attempts to submit code, catching bugs before they hit an org.
+
+---
+
+## 👥 Team Collaboration Problems
+
+Without a source-driven workflow like Salesforce DX and GitHub, teams managing large multi-developer environments inevitably run into massive operational roadblocks:
+
+### 1. Code Overwrites (The "Last-Saved Wins" Conflict)
+When multiple developers work out of a shared sandbox or deploy directly to an upstream integration environment via change sets, they routinely overwrite each other's custom logic. A developer saving a modification to an Apex class or a page layout can unknowingly wipe out an entire week's worth of a teammate's changes.
+
+### 2. The Sandbox Refresh Dilemma
+Keeping developer sandboxes identical and in sync is nearly impossible in an org-centric model. Sandboxes drift out of sync almost immediately after creation, leading to situations where code passes perfectly in a local environment but fails unexpectedly during production deployments due to missing dependencies.
+
+### 3. Change Set Management Hell
+Manually assembling change sets is a tedious, error-prone task. Developers must scroll through hundreds of metadata lines in a web UI to click components one by one. If a single dependency is forgotten, the deployment fails, forcing the developer to clone the change set and start the uploading sequence all over again.
+
+---
+
+## 🏢 Enterprise Workflow Discussion
+
+An enterprise-grade Salesforce DX workflow uses a structured branching strategy coupled with a continuous deployment pipeline to move logic safely from a local workspace to production.
+
+### The Source-Driven Deployment Pipeline:
