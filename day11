@@ -1,0 +1,77 @@
+# Day 11: Apex Testing Framework & Asynchronous Processing
+
+Welcome to the Day 11 project repository! This module bridges the gap between high-performance backend processing and platform stability. It covers the core strategies required to write robust unit tests and design scalable asynchronous architectures within the Salesforce multi-tenant environment.
+
+---
+
+## 🧪 Why Testing Matters
+
+Testing on the Salesforce platform isn't just a requirement to bypass deployment blocks; it is a foundational pillar of enterprise application health. 
+
+* **Enforcing Platform Stability:** Salesforce strictly requires an overall minimum of **75% code coverage** to deploy Apex code into a production environment. 
+* **Regression Prevention:** A comprehensive test suite acts as an automated safety net. It ensures that future modifications, updates, or Salesforce seasonal releases do not break existing business logic.
+* **Code as Documentation:** Well-written unit tests serve as executable documentation. They clearly illustrate to other developers the expected inputs, boundaries, and outputs of any given Apex method.
+* **Bulk Verification:** Testing forces developers to validate how custom code handles hundreds of records simultaneously, catching efficiency bugs before real-time users encounter production exceptions.
+
+---
+
+## ⚡ What is Asynchronous Processing?
+
+In Salesforce, **Asynchronous Processing** refers to executing a task in the background without forcing the user to wait for the task to finish before moving on. 
+
+When code runs synchronously, all actions happen on a single thread. If an action takes a long time (like an external API integration), the user interface freezes. Asynchronous processing solves this by placing tasks into a system queue. The platform executes these background tasks whenever system resources become available, decoupling the user experience from heavy processing logic.
+
+### Core Architecture Comparison:
+* **Synchronous:** User triggers action ➡️ Code executes ➡️ Database commits ➡️ User receives control back.
+* **Asynchronous:** User triggers action ➡️ Task is queued ➡️ User immediately receives control back ➡️ Task executes in background.
+
+---
+
+## 📝 Important Test Cases
+
+Writing resilient unit tests requires looking past basic "happy path" validation. A professional test architecture implements three core types of test suites:
+
+### 1. Positive Test Cases (The Happy Path)
+* **Goal:** Verifies that the code behaves exactly as expected when provided with valid, ideal data inputs.
+* **Example:** Asserting that an account status changes to "Active" when a valid, fully completed onboarding record is processed.
+
+### 2. Negative Test Cases (The Boundary Path)
+* **Goal:** Confirms that the code handles bad data, null fields, or empty lists gracefully without crashing the entire application context.
+* **Example:** Passing an invalid email format or a null ID into a utility method and asserting that custom exceptions are handled or that user-friendly error logs are created.
+
+### 3. Bulk Test Cases (The Scale Path)
+* **Goal:** Evaluates whether code handles large transaction sizes safely within multi-tenant boundaries.
+* **Example:** Using a Test Data Factory to spin up exactly 200 records at once, executing the method, and verifying that the code does not throw a `System.LimitException` due to unbulkified queries.
+
+---
+
+## 💼 Async Use Cases
+
+Salesforce provides four core asynchronous tools, each optimized for distinct engineering challenges:
+
+| Asynchronous Tool | Primary Use Case | Key Features & Constraints |
+| :--- | :--- | :--- |
+| **Future Methods (`@future`)** | Quick background tasks and isolating callouts from standard transactional logic. | Accepts only primitive data types (or collections of primitives); cannot chain multiple future jobs together. |
+| **Queueable Apex** | Complex background processing requiring state tracking and relational tracking. | Accepts complex data types (objects, custom classes); supports **job chaining** to run tasks sequentially. |
+| **Batch Apex** | Large-scale data scrubbing, archiving, or processing across millions of records. | Splits massive record sets into manageable chunks (default 200 per batch); runs across separate start, execute, and finish phases. |
+| **Scheduled Apex** | Running specific execution scripts automatically at defined times or intervals. | Uses a powerful cron expression engine to run logic daily, weekly, or monthly (e.g., generating weekly performance summaries). |
+
+---
+
+## 🛡️ Reliability Discussion
+
+Building asynchronous architecture requires strict defensive coding practices due to shared cloud infrastructure. To ensure long-term system reliability, the following patterns are built into this repository:
+
+### 1. Designing for Governor Limits
+Asynchronous processes receive higher governor limits than synchronous transactions (e.g., heap size is doubled to 12MB, and maximum SOQL queries increase from 100 to 200). However, because these limits are still strictly enforced per background chunk, all collection data paths must remain thoroughly bulkified.
+
+### 2. Testing Asynchronous Blocks
+Because async tasks execute whenever resources are free, unit tests cannot natively track them. To handle this, we use platform boundaries:
+```apex
+Test.startTest();
+// 1. Call asynchronous method here (Future, Queueable, or Batch)
+System.enqueueJob(new MyQueueableClass());
+Test.stopTest(); 
+
+// 2. Everything inside the boundary is forced to run SYNCHRONOUSLY right here.
+// 3. Securely write System.assertEquals() statements below this line.
